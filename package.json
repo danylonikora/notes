@@ -1,0 +1,29 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "targets": {
+    "default": {
+      "distDir": "./docs"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nanoid": "^3.3.4",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.6.0",
+    "@types/react": "^18.0.10",
+    "parcel": "^2.6.0",
+    "process": "^0.11.10"
+  }
+}
