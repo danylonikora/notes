@@ -143,6 +143,7 @@ body {
       display: flex;
       align-items: center;
       gap: $small-gap;
+
       cursor: pointer;
     }
 
@@ -235,6 +236,7 @@ body {
   &__tag {
     display: flex;
     align-items: center;
+
     background-color: $grey-400;
     border-radius: $small-border-radius;
     font-weight: 500;
@@ -311,6 +313,7 @@ body {
     justify-content: center;
     height: $icon-size;
     width: $icon-size;
+
     border: 1px solid $black;
     border-radius: $small-border-radius;
   }
@@ -326,6 +329,8 @@ body {
 
   &__save-btn {
     @extend .btn;
+    height: $small-heihgt;
+    padding : $small-padding-y;
   }
 }
 
@@ -387,6 +392,7 @@ body {
 
   &__field {
     overflow: hidden;
+
     &:focus {
       outline: none;
     }
@@ -395,5 +401,7 @@ body {
   &__save-btn {
     @extend .btn;
     align-self: center;
+    height: $small-heihgt;
+    padding: $small-padding-y;
   }
 }
