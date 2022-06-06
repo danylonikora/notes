@@ -3,6 +3,9 @@ import { nanoid } from "nanoid";
 import TagsDropDown from "./TagsDropDown";
 import type { NoteT } from "./Note";
 
+import pencilPng from "../assets/pencil.png";
+import plusPng from "../assets/plus.png";
+
 type DraftProps = {
   addNote: (note: NoteT) => void;
   allTags: string[];
@@ -25,10 +28,7 @@ function Draft({ addNote, allTags }: DraftProps) {
           onClick={() => setIsEditingTags(true)}
         >
           <span>Edit tags</span>
-          <img
-            className="note__icon"
-            src={new URL("../assets/pencil.png", import.meta.url)}
-          />
+          <img className="note__icon" src={pencilPng} />
         </button>
         {isEditingTags && (
           <TagsDropDown
@@ -67,10 +67,7 @@ function Draft({ addNote, allTags }: DraftProps) {
         }}
       >
         <span>Add note</span>
-        <img
-          className="draft__icon"
-          src={new URL("../assets/plus.png", import.meta.url)}
-        />
+        <img className="draft__icon" src={plusPng} />
       </button>
     </div>
   );

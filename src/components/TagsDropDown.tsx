@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import checkPng from "../assets/check.png";
+
 type TagsDropDownProps = {
   activeTags: string[];
   allTags: string[];
@@ -14,7 +16,7 @@ function TagsDropDown({
   hideSelf,
 }: TagsDropDownProps) {
   const [editingTags, setEditingTags] = useState(activeTags);
-  
+
   return (
     <ul className="tags-dropdown">
       {allTags.map((tag) => (
@@ -33,10 +35,7 @@ function TagsDropDown({
           <span>{tag}</span>
           <div className="tags-dropdown__checkbox">
             {editingTags.includes(tag) && (
-              <img
-                className="tags-dropdown__check"
-                src={new URL("../assets/check.png", import.meta.url)}
-              />
+              <img className="tags-dropdown__check" src={checkPng} />
             )}
           </div>
         </li>
