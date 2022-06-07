@@ -139,12 +139,12 @@ body {
       background-color: $grey-400;
     }
 
-    &__add {
+    &__add-btn {
       display: flex;
       align-items: center;
       gap: $small-gap;
-
-      cursor: pointer;
+      
+      cursor: inherit;
     }
 
     &__add-icon {
@@ -387,6 +387,7 @@ body {
   padding: $small-padding-x;
   z-index: 1;
 
+  cursor: default;
   box-shadow: $box-shadow;
   background-color: $white;
   border-radius: $small-border-radius;

@@ -84,14 +84,15 @@ function SideBar({
             onChange={(e) => setNewTagField(e.target.value)}
           />
         </li>
-        <li className="tags__add-btn-container">
-          <button
-            className="tags__add"
-            onClick={() => {
-              addTag(newTagField);
-              setNewTagField("");
-            }}
-          >
+        <li
+          className="tags__add-btn-container"
+          tabIndex={0}
+          onClick={() => {
+            addTag(newTagField);
+            setNewTagField("");
+          }}
+        >
+          <button className="tags__add-btn" tabIndex={-1}>
             <img className="tags__add-icon" src={plusPng} />
             <span>Add tag</span>
           </button>
