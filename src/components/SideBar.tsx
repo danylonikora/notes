@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Tag from "./Tag";
+import Overlay from "./Overlay";
 import type { FiltersT } from "../App";
 
 import plusPng from "../assets/plus.png";
@@ -29,6 +30,7 @@ function SideBar({
 
   return (
     <div className="side-bar">
+      <Overlay />
       <h3 className="side-bar__logo">Notes</h3>
       <div className="filters">
         <input

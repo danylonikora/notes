@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import TagsDropDown from "./TagsDropDown";
+import Overlay from "./Overlay";
 import type { NoteT } from "./Note";
 
 import pencilPng from "../assets/pencil.png";
@@ -22,6 +23,7 @@ function Draft({ addNote, allTags }: DraftProps) {
 
   return (
     <div className="draft">
+      <Overlay />
       <div className="note__edit-tags-dropdown">
         <button
           className="note__edit-btn note__btn"
