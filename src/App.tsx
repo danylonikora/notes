@@ -81,6 +81,10 @@ function App() {
     const note = getNoteById(id);
 
     return function (newValue: NoteT[typeof field]) {
+      // Only shallow comparison, if field required object
+      // newValue has to be new object in order to update note
+      if (note[field] === newValue) return;
+
       setNotes((prevNotes) => [
         ...prevNotes.filter((note) => note.id !== id),
         { ...note, [field]: newValue, last_update: Date.now() },
