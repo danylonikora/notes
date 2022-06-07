@@ -330,7 +330,7 @@ body {
   &__save-btn {
     @extend .btn;
     height: $small-heihgt;
-    padding : $small-padding-y;
+    padding: $small-padding-y;
   }
 }
 
@@ -404,4 +404,15 @@ body {
     height: $small-heihgt;
     padding: $small-padding-y;
   }
+}
+
+// # <Overlay />
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 998;
+  height: 100%;
+  width: 100%;
+
+  background-color: transparent;
 }
