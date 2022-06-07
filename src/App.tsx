@@ -128,9 +128,7 @@ function App() {
         document.body.style.overflowY = "scroll";
       }
     } else {
-      window.addEventListener("load", () =>
-        disableBodyScroll(savePosition)
-      );
+      window.addEventListener("load", () => disableBodyScroll(savePosition));
     }
   }
 
@@ -150,6 +148,7 @@ function App() {
     >
       <div className="page-container">
         <SideBar
+          notes={notes}
           tags={[...tags]}
           filters={filters}
           setTag={(tag) =>

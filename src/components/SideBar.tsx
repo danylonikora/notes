@@ -2,10 +2,12 @@ import { useState } from "react";
 import Tag from "./Tag";
 import Overlay from "./Overlay";
 import type { FiltersT } from "../App";
+import type { NoteT } from "./Note";
 
 import plusPng from "../assets/plus.png";
 
 type SideBarProps = {
+  notes: NoteT[];
   tags: string[];
   filters: FiltersT;
   setTag: (tag: string) => void;
@@ -17,6 +19,7 @@ type SideBarProps = {
 };
 
 function SideBar({
+  notes,
   tags,
   filters,
   setTag,
@@ -65,10 +68,13 @@ function SideBar({
           className={`tag${!filters.tag ? " active" : ""}`}
           onClick={() => setTag("")}
         >
-          All
+          <span>All ({notes.length})</span>
         </li>
         {tags.map((tag) => (
           <Tag
+            amountOfNotes={
+              notes.filter((note) => note.tags.includes(tag)).length
+            }
             tag={tag}
             isActive={filters.tag === tag}
             setTag={setTag}

@@ -5,6 +5,7 @@ import pencilPng from "../assets/pencil.png";
 import trashPng from "../assets/trash.png";
 
 type TagProps = {
+  amountOfNotes: number;
   tag: string;
   isActive: boolean;
   setTag: (tag: string) => void;
@@ -12,7 +13,14 @@ type TagProps = {
   renameTag: (tag: string, newName: string) => void;
 };
 
-function Tag({ tag, isActive, setTag, deleteTag, renameTag }: TagProps) {
+function Tag({
+  amountOfNotes,
+  tag,
+  isActive,
+  setTag,
+  deleteTag,
+  renameTag,
+}: TagProps) {
   const [isRenaming, setIsRenaming] = useState(false);
 
   const liRef = useRef<HTMLLIElement>();
@@ -23,7 +31,9 @@ function Tag({ tag, isActive, setTag, deleteTag, renameTag }: TagProps) {
       ref={liRef}
       onClick={() => setTag(tag)}
     >
-      <span>{tag}</span>
+      <span>
+        {tag} ({amountOfNotes})
+      </span>
       <div className="tag__buttons">
         <img
           className="tag__button"
