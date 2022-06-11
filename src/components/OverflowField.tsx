@@ -5,7 +5,7 @@ type OverflowFieldProps = {
   value: string;
   setValue: (value: string) => void;
   hideSelf: () => void;
-  overflowedElement: HTMLElement;
+  overflowedElement: HTMLElement | null;
 };
 
 function OverflowField({
@@ -16,12 +16,14 @@ function OverflowField({
 }: OverflowFieldProps) {
   const [field, setField] = useState(value);
 
-  const fieldRef = useRef<HTMLTextAreaElement>();
-  const containerRef = useRef<HTMLDivElement>();
+  const fieldRef = useRef<HTMLTextAreaElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const OverlayContext = useContext(OverlaysContext);
 
   useEffect(() => {
+    if (!overflowedElement) return;
+
     OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
 
     if (!fieldRef.current) return;

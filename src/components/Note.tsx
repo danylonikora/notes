@@ -19,7 +19,7 @@ type NoteProps = {
 };
 
 function Note({ data, setDraft, deleteNote }: NoteProps) {
-  const noteContentRef = useRef<HTMLDivElement>();
+  const noteContentRef = useRef<HTMLDivElement>(null);
 
   return (
     <>

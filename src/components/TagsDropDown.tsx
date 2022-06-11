@@ -19,7 +19,7 @@ function TagsDropDown({
 }: TagsDropDownProps) {
   const [editingTags, setEditingTags] = useState(activeTags);
 
-  const containerRef = useRef<HTMLUListElement>();
+  const containerRef = useRef<HTMLUListElement>(null);
 
   const OverlayContext = useContext(OverlaysContext);
 

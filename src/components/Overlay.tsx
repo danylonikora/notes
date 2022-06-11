@@ -2,7 +2,7 @@ import { useEffect, useRef, useContext } from "react";
 import { OverlaysContext } from "../App";
 
 export type OverlayProps = {
-  overlayedElementRef: React.MutableRefObject<HTMLElement> | undefined;
+  overlayedElementRef: React.RefObject<HTMLElement> | undefined;
   handleClick: (() => void) | undefined;
   activeOrverlays: number[];
 };
@@ -12,7 +12,7 @@ export type OverlayProps = {
 // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
 
 function Overlay({ id }: { id: number }) {
-  const divRef = useRef();
+  const divRef = useRef<HTMLDivElement>(null);
   const OverlayContext = useContext(OverlaysContext);
   const { handleClick, overlayedElementRef, activeOrverlays } =
     OverlayContext.overlaysProps;
@@ -25,7 +25,7 @@ function Overlay({ id }: { id: number }) {
 
     return () => {
       if (!overlayedElementRef?.current) return;
-      delete overlayedElementRef.current.style.zIndex;
+      overlayedElementRef.current.style.zIndex = "";
     };
   });
 

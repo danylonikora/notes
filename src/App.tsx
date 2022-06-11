@@ -40,10 +40,10 @@ export type draftState = {
 
 function App() {
   const [notes, setNotes] = useState<NoteT[]>(
-    JSON.parse(localStorage.getItem("notes")) || []
+    JSON.parse(localStorage.getItem("notes") || "[]")
   );
   const [tags, setTags] = useState<Set<string>>(
-    new Set(JSON.parse(localStorage.getItem("tags")) || [])
+    new Set(JSON.parse(localStorage.getItem("tags") || "[]"))
   );
   const [filters, setFilters] = useState<FiltersT>({
     sort: "ascending",
@@ -103,12 +103,13 @@ function App() {
 
   function changeNoteDecorator(id: NoteT["id"], fields: (keyof NoteT)[]) {
     const note = getNoteById(id);
+    const noteFields = Object.keys(note) as (keyof NoteT)[];
 
     return function (...newValues: any[]) {
       // Only shallow comparison, if field required object
       // newValue has to be new object in order to update note
       if (
-        Object.keys(note).every((field) =>
+        noteFields.every((field) =>
           fields.includes(field)
             ? newValues[field.indexOf(field)] === note[field]
             : true

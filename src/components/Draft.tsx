@@ -31,7 +31,7 @@ function Draft({
   const [noteFields, setNoteFields] = useState<NoteT>(draft.note);
 
   const OverlayContext = useContext(OverlaysContext);
-  const containerRef = useRef<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   function setDefaultDraftState() {
     setDraft({

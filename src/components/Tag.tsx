@@ -23,7 +23,7 @@ function Tag({
 }: TagProps) {
   const [isRenaming, setIsRenaming] = useState(false);
 
-  const liRef = useRef<HTMLLIElement>();
+  const liRef = useRef<HTMLLIElement>(null);
 
   return (
     <li
