@@ -143,7 +143,7 @@ body {
       display: flex;
       align-items: center;
       gap: $small-gap;
-      
+
       cursor: inherit;
     }
 
@@ -335,12 +335,28 @@ body {
   }
 }
 
+// Rich text
+.rich-text {
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  ul,
+  ol {
+    margin-left: 2rem;
+  }
+}
+
 // # <Draft />
 .draft {
   flex: 3;
   display: flex;
   flex-direction: column;
-  gap: $small-gap * 2;
+  gap: calc($small-gap * 2);
   padding-left: 5%;
   padding-right: 5%;
   padding-bottom: $medium-padding;
@@ -373,6 +389,87 @@ body {
 
   &__icon {
     width: $icon-size;
+  }
+}
+
+.text-editor {
+  height: 100%;
+  width: 100%;
+  padding: $small-padding-x * 2;
+  display: flex;
+  flex-direction: column;
+  gap: $small-gap;
+
+  border-radius: $small-border-radius;
+  box-shadow: $box-shadow;
+
+  // Toolbar controls formatting
+  &__toolbar {
+    display: flex;
+    gap: calc($small-gap / 2);
+    padding-bottom: $small-gap;
+
+    border-bottom: 1px solid $grey-500;
+    & .button {
+      padding: 1.4rem;
+
+      cursor: pointer;
+      background-size: $icon-size;
+      background-repeat: no-repeat;
+      background-position-y: center;
+      background-position-x: center;
+      border-radius: $small-border-radius;
+
+      &:hover,
+      &.ql-active {
+        background-color: $grey-400;
+      }
+    }
+
+    & .ql-bold {
+      background-image: url("../assets/bold.png");
+    }
+
+    & .ql-italic {
+      background-image: url("../assets/italic.png");
+    }
+
+    & .ql-underline {
+      background-image: url("../assets/underline.png");
+    }
+
+    & .ql-strike {
+      background-image: url("../assets/strikethrough.png");
+    }
+
+    & .ql-list.bulleted-list {
+      background-image: url("../assets/bullet-list.png");
+    }
+
+    & .ql-list.numbered-list {
+      background-image: url("../assets/ordered-list.png");
+    }
+  }
+
+  &__text-area {
+    padding-top: $small-gap;
+    height: 100%;
+
+    .ql-editor {
+      height: 100%;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .ql-clipboard {
+      left: -100000px;
+      height: 1px;
+      overflow-y: hidden;
+      position: absolute;
+      top: 50%;
+    }
   }
 }
 
