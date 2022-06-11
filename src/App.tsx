@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
+import { nanoid } from "nanoid";
 import Note, { NoteT } from "./components/Note";
 import SideBar from "./components/SideBar";
 import Draft from "./components/Draft";
@@ -15,17 +16,27 @@ type OverlaysContextProps = {
   showOverlays: boolean;
   mountOverlays: (
     handleClick: OverlayProps["handleClick"],
-    overlayedElementRef: OverlayProps["overlayedElementRef"]
+    overlayedElementRef: OverlayProps["overlayedElementRef"],
+    activeOverlays: OverlayProps["activeOrverlays"]
   ) => void;
   unmountOverlays: () => void;
 };
 
 export const OverlaysContext = createContext<OverlaysContextProps>({
-  overlaysProps: { overlayedElementRef: undefined, handleClick: undefined },
+  overlaysProps: {
+    overlayedElementRef: undefined,
+    handleClick: undefined,
+    activeOrverlays: [],
+  },
   showOverlays: false,
   mountOverlays: () => undefined,
   unmountOverlays: () => undefined,
 });
+
+export type draftState = {
+  mode: "editing" | "creating";
+  note: NoteT;
+};
 
 function App() {
   const [notes, setNotes] = useState<NoteT[]>(
@@ -43,6 +54,17 @@ function App() {
   const [overlaysProps, setOverlaysProps] = useState<OverlayProps>({
     overlayedElementRef: undefined,
     handleClick: undefined,
+    activeOrverlays: [],
+  });
+  const [draft, setDraft] = useState<draftState>({
+    mode: "creating",
+    note: {
+      id: nanoid(),
+      html: "",
+      delta: "",
+      tags: [],
+      last_update: Date.now(),
+    },
   });
 
   function applyFilters(notes: NoteT[]) {
@@ -56,8 +78,10 @@ function App() {
 
     if (filters.includes) {
       filteredNotes = filteredNotes.filter((note) => {
+        const div = document.createElement("div");
+        div.innerHTML = note.html;
         const regExp = new RegExp(filters.includes, "iu");
-        return note.text.match(regExp);
+        return div.textContent && div.textContent.match(regExp);
       });
     }
 
@@ -77,17 +101,31 @@ function App() {
     return note;
   }
 
-  function changeNoteDecorator(id: NoteT["id"], field: keyof NoteT) {
+  function changeNoteDecorator(id: NoteT["id"], fields: (keyof NoteT)[]) {
     const note = getNoteById(id);
 
-    return function (newValue: NoteT[typeof field]) {
+    return function (...newValues: any[]) {
       // Only shallow comparison, if field required object
       // newValue has to be new object in order to update note
-      if (note[field] === newValue) return;
+      if (
+        Object.keys(note).every((field) =>
+          fields.includes(field)
+            ? newValues[field.indexOf(field)] === note[field]
+            : true
+        )
+      )
+        return;
 
       setNotes((prevNotes) => [
         ...prevNotes.filter((note) => note.id !== id),
-        { ...note, [field]: newValue, last_update: Date.now() },
+        {
+          ...note,
+          ...fields.reduce(
+            (prev, curr, i) => ({ ...prev, [curr]: newValues[i] }),
+            {}
+          ),
+          last_update: Date.now(),
+        },
       ]);
     };
   }
@@ -141,8 +179,12 @@ function App() {
       value={{
         overlaysProps,
         showOverlays,
-        mountOverlays(handleClick, overlayedElementRef) {
-          setOverlaysProps({ handleClick, overlayedElementRef });
+        mountOverlays(handleClick, overlayedElementRef, activeOrverlays) {
+          setOverlaysProps({
+            handleClick,
+            overlayedElementRef,
+            activeOrverlays,
+          });
           setShowOverlays(true);
         },
         unmountOverlays() {
@@ -200,12 +242,12 @@ function App() {
           }
         />
         <div className="notes">
-          <Overlay />
+          <Overlay id={1} />
           {applyFilters(notes).map((note) => (
             <Note
               key={note.id}
               data={note}
-              setText={changeNoteDecorator(note.id, "text")}
+              setDraft={setDraft}
               deleteNote={(id) => {
                 // getNoteById will throw error if it won't find note with given id
                 getNoteById(id);
@@ -213,13 +255,18 @@ function App() {
                   ...prevNotes.filter((note) => note.id !== id),
                 ]);
               }}
-              setTags={changeNoteDecorator(note.id, "tags")}
-              allTags={[...tags]}
             />
           ))}
           {notes.length === 0 && "You don't have notes"}
         </div>
         <Draft
+          draft={draft}
+          setNoteHTMLDeltaAndTags={
+            draft.mode === "editing"
+              ? changeNoteDecorator(draft.note.id, ["html", "delta", "tags"])
+              : undefined
+          }
+          setDraft={setDraft}
           addNote={(note) => setNotes((prevNotes) => [...prevNotes, note])}
           allTags={[...tags]}
         />

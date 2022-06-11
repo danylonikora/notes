@@ -33,7 +33,7 @@ function SideBar({
 
   return (
     <div className="side-bar">
-      <Overlay />
+      <Overlay id={0} />
       <h3 className="side-bar__logo">Notes</h3>
       <div className="filters">
         <input
@@ -72,6 +72,7 @@ function SideBar({
         </li>
         {tags.map((tag) => (
           <Tag
+            key={tag}
             amountOfNotes={
               notes.filter((note) => note.tags.includes(tag)).length
             }

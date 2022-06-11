@@ -24,7 +24,7 @@ function TagsDropDown({
   const OverlayContext = useContext(OverlaysContext);
 
   useEffect(() => {
-    OverlayContext.mountOverlays(() => hideSelf(), containerRef);
+    OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
 
     return () => {
       OverlayContext.unmountOverlays();

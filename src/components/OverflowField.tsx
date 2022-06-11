@@ -22,7 +22,7 @@ function OverflowField({
   const OverlayContext = useContext(OverlaysContext);
 
   useEffect(() => {
-    OverlayContext.mountOverlays(() => hideSelf(), containerRef);
+    OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
 
     if (!fieldRef.current) return;
     const { width } = overflowedElement.getBoundingClientRect();
