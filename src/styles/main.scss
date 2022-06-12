@@ -376,6 +376,13 @@ body {
       content: url("../assets/check-box.png");
     }
   }
+
+  blockquote {
+    border-left: 4px solid $grey-500;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 16px;
+  }
 }
 
 // # <Draft />
@@ -483,6 +490,10 @@ body {
 
     & .ql-link {
       background-image: url("../assets/link.png");
+    }
+
+    & .ql-blockquote {
+      background-image: url("../assets/quote.png");
     }
   }
 

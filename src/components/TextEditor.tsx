@@ -14,7 +14,15 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
 
   useEffect(() => {
     const quill = new Quill(".text-editor__text-area", {
-      formats: ["bold", "italic", "underline", "strike", "list", "link"],
+      formats: [
+        "bold",
+        "italic",
+        "underline",
+        "strike",
+        "list",
+        "link",
+        "blockquote",
+      ],
       modules: {
         toolbar: ".text-editor__toolbar",
       },
@@ -65,6 +73,7 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
           title="Check list"
         />
         <button className="ql-link button" title="Embedded link" />
+        <button className="ql-blockquote button" title="Quote" />
       </div>
       <div className="text-editor__text-area" />
     </div>
