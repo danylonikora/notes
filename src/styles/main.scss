@@ -337,10 +337,6 @@ body {
 
 // Rich text
 .rich-text {
-  ul {
-    list-style: disc;
-  }
-
   ol {
     list-style: decimal;
   }
@@ -348,6 +344,37 @@ body {
   ul,
   ol {
     margin-left: 2rem;
+  }
+
+  ul {
+    list-style: disc;
+
+    &[data-checked] {
+      list-style: none;
+      pointer-events: none;
+      & li {
+        position: relative;
+      }
+
+      & li::before {
+        position: absolute;
+        left: -22px;
+        bottom: -3px;
+        pointer-events: auto;
+      }
+    }
+
+    &[data-checked="true"] {
+      text-decoration: line-through;
+      color: rgba($black, 0.5);
+      & li::before {
+        content: url("../assets/checked-box.png");
+      }
+    }
+
+    &[data-checked="false"] li::before {
+      content: url("../assets/check-box.png");
+    }
   }
 }
 
@@ -449,6 +476,10 @@ body {
     & .ql-list.numbered-list {
       background-image: url("../assets/ordered-list.png");
     }
+
+    & .ql-list.check-list {
+      background-image: url("../assets/checked-box.png");
+    }
   }
 
   &__text-area {
@@ -460,6 +491,10 @@ body {
 
       &:focus {
         outline: none;
+      }
+
+      ul[data-checked] li::before {
+        cursor: pointer;
       }
     }
 

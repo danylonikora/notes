@@ -59,6 +59,11 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
           value="ordered"
           title="Numbered list"
         />
+        <button
+          className="ql-list check-list button"
+          value="check"
+          title="Check list"
+        />
       </div>
       <div className="text-editor__text-area"></div>
     </div>
