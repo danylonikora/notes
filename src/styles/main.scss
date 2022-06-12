@@ -480,6 +480,10 @@ body {
     & .ql-list.check-list {
       background-image: url("../assets/checked-box.png");
     }
+
+    & .ql-link {
+      background-image: url("../assets/link.png");
+    }
   }
 
   &__text-area {
