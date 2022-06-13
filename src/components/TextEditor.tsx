@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Quill from "quill";
+import ColorPicker, { COLORS } from "./ColorPicker";
 import type { draftState } from "../App";
 import type { NoteT } from "./Note";
 
@@ -11,6 +12,9 @@ type TextEditorProps = {
 
 function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
   const [quill, setQuill] = useState<Quill | undefined>();
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const colorSelectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     const quill = new Quill(".text-editor__text-area", {
@@ -22,6 +26,7 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
         "list",
         "link",
         "blockquote",
+        "background",
       ],
       modules: {
         toolbar: ".text-editor__toolbar",
@@ -74,6 +79,35 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
         />
         <button className="ql-link button" title="Embedded link" />
         <button className="ql-blockquote button" title="Quote" />
+        <div className="color-picker-container">
+          <button
+            className="ql-background button"
+            title="Highlight"
+            onClick={() => setShowColorPicker(true)}
+          />
+          <select
+            className="ql-background color-select"
+            defaultValue=""
+            ref={colorSelectRef}
+            onClick={() => setShowColorPicker(true)}
+          >
+            <option value="" />
+            {COLORS.map((color) => (
+              <option key={color.name} value={color.hex} />
+            ))}
+          </select>
+          {showColorPicker && (
+            <ColorPicker
+              changeHandler={(value) => {
+                if (!colorSelectRef.current) return;
+                colorSelectRef.current.value = value;
+                colorSelectRef.current.dispatchEvent(new Event("change"));
+                setShowColorPicker(false);
+              }}
+              hideSelf={() => setShowColorPicker(false)}
+            />
+          )}
+        </div>
       </div>
       <div className="text-editor__text-area" />
     </div>

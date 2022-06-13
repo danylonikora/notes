@@ -497,6 +497,14 @@ body {
     & .ql-blockquote {
       background-image: url("../assets/quote.png");
     }
+
+    & .ql-background.button {
+      background-image: url("../assets/highlighter.png");
+    }
+
+    & .ql-background.color-select {
+      display: none;
+    }
   }
 
   &__text-area {
@@ -523,6 +531,10 @@ body {
       top: 50%;
     }
   }
+}
+
+.color-picker-container {
+  position: relative;
 }
 
 // # <OverflowField />
