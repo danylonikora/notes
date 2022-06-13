@@ -567,3 +567,33 @@ body {
 
   background-color: transparent;
 }
+
+// # <ColorPicker />
+.color-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: calc($small-gap / 2);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: $small-padding-x;
+
+  border-radius: $small-border-radius;
+  background-color: $white;
+  box-shadow: $box-shadow;
+
+  &__color,
+  &__default {
+    width: $icon-size;
+    height: $icon-size;
+
+    cursor: pointer;
+    border-radius: $small-border-radius;
+    border: 1px solid $grey-600;
+  }
+
+  &__default {
+    background-color: $white;
+  }
+}
