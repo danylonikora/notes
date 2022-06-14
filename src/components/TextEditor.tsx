@@ -12,9 +12,11 @@ type TextEditorProps = {
 
 function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
   const [quill, setQuill] = useState<Quill | undefined>();
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showBgColorPicker, setShowBgColorPicker] = useState(false);
+  const [showTxtColorPicker, setShowTxtColorPicker] = useState(false);
 
-  const colorSelectRef = useRef<HTMLSelectElement>(null);
+  const bgColorSelectRef = useRef<HTMLSelectElement>(null);
+  const txtColorSelectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     const quill = new Quill(".text-editor__text-area", {
@@ -27,6 +29,7 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
         "link",
         "blockquote",
         "background",
+        "color",
       ],
       modules: {
         toolbar: ".text-editor__toolbar",
@@ -83,28 +86,57 @@ function TextEditor({ setNotesHTMLAndDelta, note, mode }: TextEditorProps) {
           <button
             className="ql-background button"
             title="Highlight"
-            onClick={() => setShowColorPicker(true)}
+            onClick={() => setShowBgColorPicker(true)}
           />
           <select
             className="ql-background color-select"
             defaultValue=""
-            ref={colorSelectRef}
-            onClick={() => setShowColorPicker(true)}
+            ref={bgColorSelectRef}
+            onClick={() => setShowBgColorPicker(true)}
           >
             <option value="" />
             {COLORS.map((color) => (
               <option key={color.name} value={color.hex} />
             ))}
           </select>
-          {showColorPicker && (
+          {showBgColorPicker && (
             <ColorPicker
               changeHandler={(value) => {
-                if (!colorSelectRef.current) return;
-                colorSelectRef.current.value = value;
-                colorSelectRef.current.dispatchEvent(new Event("change"));
-                setShowColorPicker(false);
+                if (!bgColorSelectRef.current) return;
+                bgColorSelectRef.current.value = value;
+                bgColorSelectRef.current.dispatchEvent(new Event("change"));
+                setShowBgColorPicker(false);
               }}
-              hideSelf={() => setShowColorPicker(false)}
+              hideSelf={() => setShowBgColorPicker(false)}
+            />
+          )}
+        </div>
+        <div className="color-picker-container">
+          <button
+            className="ql-color button"
+            title="Text color"
+            onClick={() => setShowTxtColorPicker(true)}
+          />
+          <select
+            className="ql-color color-select"
+            defaultValue=""
+            ref={txtColorSelectRef}
+            onClick={() => setShowTxtColorPicker(true)}
+          >
+            <option value="" />
+            {COLORS.map((color) => (
+              <option key={color.name} value={color.hex} />
+            ))}
+          </select>
+          {showTxtColorPicker && (
+            <ColorPicker
+              changeHandler={(value) => {
+                if (!txtColorSelectRef.current) return;
+                txtColorSelectRef.current.value = value;
+                txtColorSelectRef.current.dispatchEvent(new Event("change"));
+                setShowTxtColorPicker(false);
+              }}
+              hideSelf={() => setShowTxtColorPicker(false)}
             />
           )}
         </div>
