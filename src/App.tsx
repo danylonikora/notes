@@ -46,7 +46,7 @@ function App() {
     new Set(JSON.parse(localStorage.getItem("tags") || "[]"))
   );
   const [filters, setFilters] = useState<FiltersT>({
-    sort: "ascending",
+    sort: "descending",
     includes: "",
     tag: "",
   });
