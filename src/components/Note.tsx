@@ -21,6 +21,21 @@ type NoteProps = {
 function Note({ data, setDraft, deleteNote }: NoteProps) {
   const noteContentRef = useRef<HTMLDivElement>(null);
 
+  function formatLastUpdateTime() {
+    const now = new Date();
+    const lastUpdate = new Date(data.last_update);
+    const timeOfLastUpdate = lastUpdate.toLocaleTimeString("uk-UA", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    if (now.toDateString() === lastUpdate.toDateString()) {
+      return `Today at ${timeOfLastUpdate}`;
+    } else {
+      return `${lastUpdate.toLocaleDateString("uk-UA")} at ${timeOfLastUpdate}`;
+    }
+  }
+
   return (
     <>
       <div className="note">
@@ -28,11 +43,7 @@ function Note({ data, setDraft, deleteNote }: NoteProps) {
           className="note__date"
           dateTime={new Date(Date.now()).toISOString()}
         >
-          {Date.now() - data.last_update > 1000 * 60 * 60 * 12
-            ? new Date(data.last_update).toLocaleDateString("uk-UA")
-            : `${("0" + new Date(data.last_update).getHours()).slice(-2)}:${(
-                "0" + new Date(data.last_update).getMinutes()
-              ).slice(-2)}`}
+          {formatLastUpdateTime()}
         </time>
         <ul className="note__tags">
           {data.tags.map((tag) => (
