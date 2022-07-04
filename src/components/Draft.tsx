@@ -1,11 +1,13 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { nanoid } from "nanoid";
+import { nanoid } from "@reduxjs/toolkit";
 import TagsDropDown from "./TagsDropDown";
 import Overlay from "./Overlay";
 import TextEditor from "./TextEditor";
 import { OverlaysContext } from "../App";
 import type { NoteT } from "./Note";
 import type { draftState } from "../App";
+import { addNote, changeNote } from "../store/notesSlice";
+import { useAppDispatch } from "../store";
 
 import pencilPng from "../assets/pencil.png";
 import plusPng from "../assets/plus.png";
@@ -13,25 +15,16 @@ import plusPng from "../assets/plus.png";
 type DraftProps = {
   draft: draftState;
   setDraft: React.Dispatch<React.SetStateAction<draftState>>;
-  addNote: (note: NoteT) => void;
-  setNoteHTMLDeltaAndTags:
-    | ((html: string, delta: string, tags: string[]) => void)
-    | undefined;
-  allTags: string[];
 };
 
-function Draft({
-  draft,
-  setDraft,
-  addNote,
-  setNoteHTMLDeltaAndTags,
-  allTags,
-}: DraftProps) {
+function Draft({ draft, setDraft }: DraftProps) {
   const [isEditingTags, setIsEditingTags] = useState(false);
   const [noteFields, setNoteFields] = useState<NoteT>(draft.note);
 
   const OverlayContext = useContext(OverlaysContext);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const dispatch = useAppDispatch();
 
   function setDefaultDraftState() {
     setDraft({
@@ -74,7 +67,6 @@ function Draft({
               setNoteFields((prevFieds) => ({ ...prevFieds, tags: newTags }));
             }}
             activeTags={noteFields.tags}
-            allTags={allTags}
           />
         )}
       </div>
@@ -93,12 +85,17 @@ function Draft({
         className="draft__add-note-btn"
         onClick={() => {
           if (draft.mode === "creating") {
-            addNote({ ...noteFields, last_update: Date.now() });
-          } else if (setNoteHTMLDeltaAndTags) {
-            setNoteHTMLDeltaAndTags(
-              noteFields.html,
-              noteFields.delta,
-              noteFields.tags
+            dispatch(addNote({ ...noteFields, last_update: Date.now() }));
+          } else {
+            dispatch(
+              changeNote({
+                id: noteFields.id,
+                fields: {
+                  html: noteFields.html,
+                  delta: noteFields.delta,
+                  tags: noteFields.tags,
+                },
+              })
             );
           }
 

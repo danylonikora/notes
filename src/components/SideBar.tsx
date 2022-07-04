@@ -2,34 +2,24 @@ import { useState } from "react";
 import Tag from "./Tag";
 import Overlay from "./Overlay";
 import type { FiltersT } from "../App";
-import type { NoteT } from "./Note";
+import { useAppSelector, useAppDispatch } from "../store";
+import { selectNotes } from "../store/notesSlice";
+import { addTag, selectTags } from "../store/tagsSlice";
 
 import plusPng from "../assets/plus.png";
 
 type SideBarProps = {
-  notes: NoteT[];
-  tags: string[];
   filters: FiltersT;
   setTag: (tag: string) => void;
   setIncludes: (string: string) => void;
   setSort: (order: FiltersT["sort"]) => void;
-  addTag: (tag: string) => void;
-  deleteTag: (tag: string) => void;
-  renameTag: (tag: string, newName: string) => void;
 };
 
-function SideBar({
-  notes,
-  tags,
-  filters,
-  setTag,
-  setIncludes,
-  setSort,
-  addTag,
-  deleteTag,
-  renameTag,
-}: SideBarProps) {
+function SideBar({ filters, setTag, setIncludes, setSort }: SideBarProps) {
   const [newTagField, setNewTagField] = useState("");
+  const notes = useAppSelector(selectNotes);
+  const tags = useAppSelector(selectTags);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="side-bar">
@@ -79,8 +69,6 @@ function SideBar({
             tag={tag}
             isActive={filters.tag === tag}
             setTag={setTag}
-            deleteTag={deleteTag}
-            renameTag={renameTag}
           />
         ))}
         <li>
@@ -95,7 +83,7 @@ function SideBar({
           className="tags__add-btn-container"
           tabIndex={0}
           onClick={() => {
-            addTag(newTagField);
+            dispatch(addTag(newTagField));
             setNewTagField("");
           }}
         >
