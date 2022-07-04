@@ -1,9 +1,11 @@
 import React, { useState, useEffect, createContext } from "react";
-import { nanoid } from "nanoid";
+import { nanoid } from "@reduxjs/toolkit";
 import Note, { NoteT } from "./components/Note";
 import SideBar from "./components/SideBar";
 import Draft from "./components/Draft";
 import Overlay, { OverlayProps } from "./components/Overlay";
+import { useAppSelector } from "./store";
+import { selectNotes } from "./store/notesSlice";
 
 export type FiltersT = {
   sort: "ascending" | "descending";
@@ -39,12 +41,7 @@ export type draftState = {
 };
 
 function App() {
-  const [notes, setNotes] = useState<NoteT[]>(
-    JSON.parse(localStorage.getItem("notes") || "[]")
-  );
-  const [tags, setTags] = useState<Set<string>>(
-    new Set(JSON.parse(localStorage.getItem("tags") || "[]"))
-  );
+  const notes = useAppSelector(selectNotes);
   const [filters, setFilters] = useState<FiltersT>({
     sort: "descending",
     includes: "",
@@ -92,52 +89,6 @@ function App() {
 
     return filteredNotes;
   }
-
-  function getNoteById(id: NoteT["id"]) {
-    const note = notes.find((note) => note.id === id);
-    if (!note) {
-      throw new Error(`Note with id '${id}' doesn't exist`);
-    }
-    return note;
-  }
-
-  function changeNoteDecorator(id: NoteT["id"], fields: (keyof NoteT)[]) {
-    const note = getNoteById(id);
-    const noteFields = Object.keys(note) as (keyof NoteT)[];
-
-    return function (...newValues: any[]) {
-      // Only shallow comparison, if field required object
-      // newValue has to be new object in order to update note
-      if (
-        noteFields.every((field) =>
-          fields.includes(field)
-            ? newValues[field.indexOf(field)] === note[field]
-            : true
-        )
-      )
-        return;
-
-      setNotes((prevNotes) => [
-        ...prevNotes.filter((note) => note.id !== id),
-        {
-          ...note,
-          ...fields.reduce(
-            (prev, curr, i) => ({ ...prev, [curr]: newValues[i] }),
-            {}
-          ),
-          last_update: Date.now(),
-        },
-      ]);
-    };
-  }
-
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
-
-  useEffect(() => {
-    localStorage.setItem("tags", JSON.stringify([...tags]));
-  }, [tags]);
 
   useEffect(() => {
     if (showOverlays) {
@@ -195,8 +146,6 @@ function App() {
     >
       <div className="page-container">
         <SideBar
-          notes={notes}
-          tags={[...tags]}
           filters={filters}
           setTag={(tag) =>
             setFilters((prevFilters) => ({ ...prevFilters, tag }))
@@ -210,67 +159,14 @@ function App() {
           setSort={(order) =>
             setFilters((prevFilters) => ({ ...prevFilters, sort: order }))
           }
-          addTag={(tag) => setTags((prevTags) => new Set([...prevTags, tag]))}
-          deleteTag={(tag) =>
-            setTags((prevTags) => {
-              const newTags = new Set([...prevTags].filter((t) => t !== tag));
-              setNotes((prevNotes) =>
-                prevNotes.map((note) => {
-                  if (note.tags.includes(tag)) {
-                    note.tags = note.tags.filter((t) => t !== tag);
-                  }
-                  return note;
-                })
-              );
-              return newTags;
-            })
-          }
-          renameTag={(tag, newName) =>
-            setTags((prevTags) => {
-              const newTags = new Set(
-                [...prevTags].map((t) => (t === tag ? newName : t))
-              );
-              setNotes((prevNotes) =>
-                prevNotes.map((note) => {
-                  if (note.tags.includes(tag)) {
-                    note.tags[note.tags.indexOf(tag)] = newName;
-                  }
-                  return note;
-                })
-              );
-              return newTags;
-            })
-          }
         />
         <div className="notes">
           <Overlay id={1} />
           {applyFilters(notes).map((note) => (
-            <Note
-              key={note.id}
-              data={note}
-              setDraft={setDraft}
-              deleteNote={(id) => {
-                // getNoteById will throw error if it won't find note with given id
-                getNoteById(id);
-                setNotes((prevNotes) => [
-                  ...prevNotes.filter((note) => note.id !== id),
-                ]);
-              }}
-            />
+            <Note key={note.id} data={note} setDraft={setDraft} />
           ))}
-          {notes.length === 0 && "You don't have notes"}
         </div>
-        <Draft
-          draft={draft}
-          setNoteHTMLDeltaAndTags={
-            draft.mode === "editing"
-              ? changeNoteDecorator(draft.note.id, ["html", "delta", "tags"])
-              : undefined
-          }
-          setDraft={setDraft}
-          addNote={(note) => setNotes((prevNotes) => [...prevNotes, note])}
-          allTags={[...tags]}
-        />
+        <Draft draft={draft} setDraft={setDraft} />
       </div>
     </OverlaysContext.Provider>
   );

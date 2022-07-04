@@ -1,23 +1,23 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import Overlay from "./Overlay";
 import { OverlaysContext } from "../App";
+import { useAppSelector } from "../store";
+import { selectTags } from "../store/tagsSlice";
 
 import checkPng from "../assets/check.png";
 
 type TagsDropDownProps = {
   activeTags: string[];
-  allTags: string[];
   setActiveTags: (tags: string[]) => void;
   hideSelf: () => void;
 };
 
 function TagsDropDown({
-  allTags,
   activeTags,
   setActiveTags,
   hideSelf,
 }: TagsDropDownProps) {
   const [editingTags, setEditingTags] = useState(activeTags);
+  const tags = useAppSelector(selectTags);
 
   const containerRef = useRef<HTMLUListElement>(null);
 
@@ -33,7 +33,7 @@ function TagsDropDown({
 
   return (
     <ul className="tags-dropdown" ref={containerRef}>
-      {allTags.map((tag) => (
+      {[...tags].map((tag) => (
         <li
           className="tags-dropdown__tag"
           key={tag}

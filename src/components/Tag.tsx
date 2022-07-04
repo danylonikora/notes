@@ -1,5 +1,8 @@
 import { useState, useRef } from "react";
 import OverflowField from "./OverflowField";
+import { useAppDispatch } from "../store";
+import { removeTag, renameTag } from "../store/tagsSlice";
+import { updateNotesTag } from "../store/notesSlice";
 
 import pencilPng from "../assets/pencil.png";
 import trashPng from "../assets/trash.png";
@@ -9,21 +12,13 @@ type TagProps = {
   tag: string;
   isActive: boolean;
   setTag: (tag: string) => void;
-  deleteTag: (tag: string) => void;
-  renameTag: (tag: string, newName: string) => void;
 };
 
-function Tag({
-  amountOfNotes,
-  tag,
-  isActive,
-  setTag,
-  deleteTag,
-  renameTag,
-}: TagProps) {
+function Tag({ amountOfNotes, tag, isActive, setTag }: TagProps) {
   const [isRenaming, setIsRenaming] = useState(false);
 
   const liRef = useRef<HTMLLIElement>(null);
+  const dispatch = useAppDispatch();
 
   return (
     <li
@@ -52,14 +47,17 @@ function Tag({
           tabIndex={0}
           onClick={(e) => {
             e.stopPropagation();
-            deleteTag(tag);
+            dispatch(removeTag(tag));
           }}
         />
       </div>
       {isRenaming && (
         <OverflowField
           value={tag}
-          setValue={(newName) => renameTag(tag, newName)}
+          setValue={(newName) => {
+            dispatch(renameTag({ name: tag, newName }));
+            dispatch(updateNotesTag({ oldTagName: tag, newTagName: newName }));
+          }}
           hideSelf={() => setIsRenaming(false)}
           overflowedElement={liRef.current}
         />

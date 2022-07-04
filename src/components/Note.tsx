@@ -1,11 +1,13 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import type { draftState } from "../App";
+import { useAppDispatch } from "../store";
+import { removeNote } from "../store/notesSlice";
 
 import pencilPng from "../assets/pencil.png";
 import trashPng from "../assets/trash.png";
 
 export type NoteT = {
-  id: string;
+  readonly id: string;
   html: string;
   delta: string;
   tags: string[];
@@ -15,11 +17,11 @@ export type NoteT = {
 type NoteProps = {
   data: NoteT;
   setDraft: React.Dispatch<React.SetStateAction<draftState>>;
-  deleteNote: (id: NoteT["id"]) => void;
 };
 
-function Note({ data, setDraft, deleteNote }: NoteProps) {
+function Note({ data, setDraft }: NoteProps) {
   const noteContentRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
   function formatLastUpdateTime() {
     const now = new Date();
@@ -70,7 +72,7 @@ function Note({ data, setDraft, deleteNote }: NoteProps) {
           <button
             className="note__delete-btn note__btn"
             onClick={() => {
-              deleteNote(data.id);
+              dispatch(removeNote(data.id));
             }}
           >
             <span>Delete</span>
