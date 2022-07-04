@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { NoteT } from "../components/Note";
 import { RootState } from "./index";
 
-type hello = {};
-
 type NotesState = NoteT[];
 
 const initialState: NotesState = JSON.parse(
@@ -40,10 +38,10 @@ export const notesSlice = createSlice({
       if (
         noteKeys.every((key) => {
           if (key in fields) {
-            return fields[key] === note[key];
+            return JSON.stringify(fields[key]) === JSON.stringify(note[key]);
           }
           return true;
-        }) // Return if values didn't change. Only shallow comparison.
+        }) // Return if values didn't change.
       )
         return;
 
