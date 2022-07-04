@@ -50,6 +50,7 @@ export const notesSlice = createSlice({
       for (let key in fields) {
         note[key] = fields[key];
       }
+      note.last_update = Date.now();
     },
     updateNotesTag(
       state,
