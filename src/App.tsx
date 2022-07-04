@@ -162,9 +162,25 @@ function App() {
         />
         <div className="notes">
           <Overlay id={1} />
-          {applyFilters(notes).map((note) => (
-            <Note key={note.id} data={note} setDraft={setDraft} />
-          ))}
+          {(() => {
+            if (notes.length === 0) return "You don't have notes.";
+
+            const filteredNotes = applyFilters(notes).map((note) => (
+              <Note key={note.id} data={note} setDraft={setDraft} />
+            ));
+
+            switch (true) {
+              case filteredNotes.length > 0:
+                return filteredNotes;
+              case filters.tag &&
+                notes.filter((note) => {
+                  return note.tags.includes(filters.tag);
+                }).length === 0:
+                return "You don't have notes with this tag.";
+              case Boolean(filters.includes):
+                return "Notes that contain searched text weren't found.";
+            }
+          })()}
         </div>
         <Draft draft={draft} setDraft={setDraft} />
       </div>
