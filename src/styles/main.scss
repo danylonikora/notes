@@ -440,7 +440,7 @@ body {
     align-self: center;
   }
 
-  &__add-note-btn {
+  &__btn {
     @extend .btn;
     display: flex;
     align-items: center;
@@ -542,13 +542,17 @@ body {
       height: 100%;
     }
 
-    & .text-editor--maximize {
+    & .text-editor__maximize {
       background-image: url("../assets/maximize.png");
     }
 
-    & .text-editor--shrink {
+    & .text-editor__shrink {
       background-image: url("../assets/shrink.png");
       background-size: calc($icon-size + 0.2rem);
+    }
+
+    & .text-editor__clear {
+      background-image: url("../assets/trash.png");
     }
   }
 

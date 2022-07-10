@@ -152,7 +152,15 @@ function TextEditor({
         </div>
         <div className="text-editor__toolbar-btns-container">
           <button
-            className={`text-editor--${
+            className="text-editor__clear button"
+            title="Clear"
+            onClick={() => {
+              if (!quill) return;
+              quill.deleteText(0, quill.getLength());
+            }}
+          />
+          <button
+            className={`text-editor__${
               isFullSized ? "shrink" : "maximize"
             } button`}
             title={`${isFullSized ? "Shrink editor" : "Maximize editor"}`}

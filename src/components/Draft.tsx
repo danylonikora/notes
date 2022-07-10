@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { isFulfilled, nanoid } from "@reduxjs/toolkit";
+import { nanoid } from "@reduxjs/toolkit";
 import TagsDropDown from "./TagsDropDown";
 import Overlay from "./Overlay";
 import TextEditor from "./TextEditor";
@@ -11,6 +11,7 @@ import { useAppDispatch } from "../store";
 
 import pencilPng from "../assets/pencil.png";
 import plusPng from "../assets/plus.png";
+import trashPng from "../assets/trash.png";
 
 type DraftProps = {
   draft: draftState;
@@ -88,7 +89,7 @@ function Draft({ draft, setDraft }: DraftProps) {
         />
         <div className="draft__btns">
           <button
-            className="draft__add-note-btn"
+            className="draft__btn"
             onClick={() => {
               if (draft.mode === "creating") {
                 dispatch(addNote({ ...noteFields, last_update: Date.now() }));
@@ -132,6 +133,10 @@ function Draft({ draft, setDraft }: DraftProps) {
               />
             )}
           </div>
+          {/* <button className="draft__btn" onClick={() => setDefaultDraftState()}>
+            <span>Clear</span>
+            <img className="note__icon" src={trashPng} />
+          </button> */}
         </div>
       </div>
     </div>
