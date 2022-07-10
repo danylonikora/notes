@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { nanoid } from "@reduxjs/toolkit";
+import { isFulfilled, nanoid } from "@reduxjs/toolkit";
 import TagsDropDown from "./TagsDropDown";
 import Overlay from "./Overlay";
 import TextEditor from "./TextEditor";
@@ -20,9 +20,12 @@ type DraftProps = {
 function Draft({ draft, setDraft }: DraftProps) {
   const [isEditingTags, setIsEditingTags] = useState(false);
   const [noteFields, setNoteFields] = useState<NoteT>(draft.note);
+  const [isEditorFullSized, setIsEditorFullSized] = useState(false);
 
   const OverlayContext = useContext(OverlaysContext);
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useAppDispatch();
 
@@ -49,62 +52,88 @@ function Draft({ draft, setDraft }: DraftProps) {
     }
   }, [draft]);
 
+  useEffect(() => {
+    if (isEditorFullSized) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "";
+    }
+  }, [isEditorFullSized]);
+
   return (
     <div className="draft" ref={containerRef}>
       <Overlay id={2} />
-      <div className="note__edit-tags-dropdown">
-        <button
-          className="note__edit-btn note__btn"
-          onClick={() => setIsEditingTags(true)}
-        >
-          <span>Edit tags</span>
-          <img className="note__icon" src={pencilPng} />
-        </button>
-        {isEditingTags && (
-          <TagsDropDown
-            hideSelf={() => setIsEditingTags(false)}
-            setActiveTags={(newTags: string[]) => {
-              setNoteFields((prevFieds) => ({ ...prevFieds, tags: newTags }));
-            }}
-            activeTags={noteFields.tags}
-          />
-        )}
-      </div>
-      <TextEditor
-        note={draft.note}
-        mode={draft.mode}
-        setNotesHTMLAndDelta={(html, delta) =>
-          setNoteFields((prevFields) => ({
-            ...prevFields,
-            html,
-            delta,
-          }))
-        }
-      />
-      <button
-        className="draft__add-note-btn"
-        onClick={() => {
-          if (draft.mode === "creating") {
-            dispatch(addNote({ ...noteFields, last_update: Date.now() }));
-          } else {
-            dispatch(
-              changeNote({
-                id: noteFields.id,
-                fields: {
-                  html: noteFields.html,
-                  delta: noteFields.delta,
-                  tags: noteFields.tags,
-                },
-              })
-            );
+      <div className="draft__editor" ref={editorRef}>
+        <TextEditor
+          note={draft.note}
+          mode={draft.mode}
+          setNotesHTMLAndDelta={(html, delta) =>
+            setNoteFields((prevFields) => ({
+              ...prevFields,
+              html,
+              delta,
+            }))
           }
+          handleFullSize={() => {
+            const container = editorRef.current;
+            if (!container) return;
+            if (isEditorFullSized) {
+              container.classList.remove("draft__editor--full-size");
+            } else {
+              container.classList.add("draft__editor--full-size");
+            }
+            setIsEditorFullSized((prev) => !prev);
+          }}
+          isFullSized={isEditorFullSized}
+        />
+        <div className="draft__btns">
+          <button
+            className="draft__add-note-btn"
+            onClick={() => {
+              if (draft.mode === "creating") {
+                dispatch(addNote({ ...noteFields, last_update: Date.now() }));
+              } else {
+                dispatch(
+                  changeNote({
+                    id: noteFields.id,
+                    fields: {
+                      html: noteFields.html,
+                      delta: noteFields.delta,
+                      tags: noteFields.tags,
+                    },
+                  })
+                );
+              }
 
-          setDefaultDraftState();
-        }}
-      >
-        <span>{draft.mode === "editing" ? "Save" : "Add"} note</span>
-        <img className="draft__icon" src={plusPng} />
-      </button>
+              setDefaultDraftState();
+            }}
+          >
+            <span>{draft.mode === "editing" ? "Save" : "Add"} note</span>
+            <img className="draft__icon" src={plusPng} />
+          </button>
+          <div className="note__edit-tags-dropdown">
+            <button
+              className="note__edit-btn note__btn"
+              onClick={() => setIsEditingTags(true)}
+            >
+              <span>Edit tags</span>
+              <img className="note__icon" src={pencilPng} />
+            </button>
+            {isEditingTags && (
+              <TagsDropDown
+                hideSelf={() => setIsEditingTags(false)}
+                setActiveTags={(newTags: string[]) => {
+                  setNoteFields((prevFieds) => ({
+                    ...prevFieds,
+                    tags: newTags,
+                  }));
+                }}
+                activeTags={noteFields.tags}
+              />
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -401,6 +401,26 @@ body {
   align-self: flex-start;
   height: 100vh;
 
+  &__editor {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $small-gap;
+    padding: $medium-padding;
+
+    background-color: $white;
+    box-shadow: $box-shadow;
+    border-radius: $small-border-radius;
+
+    transition: width ease 1s;
+
+    &--full-size {
+      position: fixed;
+      inset: 0;
+    }
+  }
+
   &__text {
     padding: $small-padding-x;
     height: 80%;
@@ -412,6 +432,12 @@ body {
     &:focus {
       outline: none;
     }
+  }
+
+  &__btns {
+    display: flex;
+    gap: 1rem;
+    align-self: center;
   }
 
   &__add-note-btn {
@@ -429,23 +455,25 @@ body {
 }
 
 .text-editor {
-  height: 100%;
+  height: 95%;
   width: 100%;
-  padding: $small-padding-x * 2;
   display: flex;
   flex-direction: column;
   gap: $small-gap;
 
-  border-radius: $small-border-radius;
-  box-shadow: $box-shadow;
-
   // Toolbar controls formatting
   &__toolbar {
     display: flex;
-    gap: calc($small-gap / 2);
+    justify-content: space-between;
     padding-bottom: $small-gap;
 
     border-bottom: 1px solid $grey-500;
+
+    & .text-editor__toolbar-btns-container {
+      display: flex;
+      gap: calc($small-gap / 2);
+    }
+
     & .button {
       padding: 1.4rem;
 
@@ -513,11 +541,28 @@ body {
       width: 100%;
       height: 100%;
     }
+
+    & .text-editor--maximize {
+      background-image: url("../assets/maximize.png");
+    }
+
+    & .text-editor--shrink {
+      background-image: url("../assets/shrink.png");
+      background-size: calc($icon-size + 0.2rem);
+    }
   }
 
   &__text-area {
     padding-top: $small-gap;
+    padding-left: $small-padding-x;
+    padding-right: $small-padding-x;
     height: 100%;
+    overflow-y: auto;
+
+    & ul,
+    & ol {
+      margin-left: 2.2rem;
+    }
 
     .ql-editor {
       height: 100%;
@@ -543,6 +588,7 @@ body {
 
 .color-picker-container {
   position: relative;
+  display: inline-block;
 }
 
 // # <OverflowField />
