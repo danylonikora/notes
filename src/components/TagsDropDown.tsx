@@ -9,12 +9,14 @@ type TagsDropDownProps = {
   activeTags: string[];
   setActiveTags: (tags: string[]) => void;
   hideSelf: () => void;
+  activeOverlays: number[];
 };
 
 function TagsDropDown({
   activeTags,
   setActiveTags,
   hideSelf,
+  activeOverlays,
 }: TagsDropDownProps) {
   const [editingTags, setEditingTags] = useState(activeTags);
   const tags = useAppSelector(selectTags);
@@ -24,7 +26,11 @@ function TagsDropDown({
   const OverlayContext = useContext(OverlaysContext);
 
   useEffect(() => {
-    OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
+    OverlayContext.mountOverlays(
+      () => hideSelf(),
+      containerRef,
+      activeOverlays
+    );
 
     return () => {
       OverlayContext.unmountOverlays();

@@ -59,6 +59,7 @@ function Draft({ draft, setDraft }: DraftProps) {
     <div className="draft" ref={containerRef}>
       <Overlay id={2} />
       <div className="draft__editor" ref={editorRef}>
+        <Overlay id={3} />
         <TextEditor
           note={draft.note}
           mode={draft.mode}

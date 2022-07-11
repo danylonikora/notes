@@ -158,6 +158,7 @@ function TextEditor({
         </div>
         <div className="text-editor__toolbar-btns-container">
           <div className="text-editor__tags-dropdown">
+            {/* <Overlay id={3} /> */}
             <button
               className="text-editor__tags button"
               title="Edit note's tags"
@@ -168,6 +169,7 @@ function TextEditor({
                 hideSelf={() => setIsEditingTags(false)}
                 setActiveTags={setNotesTags}
                 activeTags={note.tags}
+                activeOverlays={isFullSized ? [3] : [0, 1, 2]}
               />
             )}
           </div>
