@@ -3,6 +3,7 @@ import Quill from "quill";
 import ColorPicker, { COLORS } from "./ColorPicker";
 import type { draftState } from "../App";
 import type { NoteT } from "./Note";
+import TagsDropDown from "./TagsDropDown";
 
 type TextEditorProps = {
   setNotesHTMLAndDelta: (html: string, delta: string) => void;
@@ -10,6 +11,8 @@ type TextEditorProps = {
   mode: draftState["mode"];
   handleFullSize: () => void;
   isFullSized: boolean;
+  handleSave: () => void;
+  setNotesTags: (tags: string[]) => void;
 };
 
 function TextEditor({
@@ -18,10 +21,13 @@ function TextEditor({
   mode,
   handleFullSize,
   isFullSized,
+  handleSave,
+  setNotesTags,
 }: TextEditorProps) {
   const [quill, setQuill] = useState<Quill | undefined>();
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [showTxtColorPicker, setShowTxtColorPicker] = useState(false);
+  const [isEditingTags, setIsEditingTags] = useState(false);
 
   const bgColorSelectRef = useRef<HTMLSelectElement>(null);
   const txtColorSelectRef = useRef<HTMLSelectElement>(null);
@@ -151,6 +157,26 @@ function TextEditor({
           </div>
         </div>
         <div className="text-editor__toolbar-btns-container">
+          <div className="text-editor__tags-dropdown">
+            <button
+              className="text-editor__tags button"
+              title="Edit note's tags"
+              onClick={() => setIsEditingTags((prev) => !prev)}
+            />
+            {isEditingTags && (
+              <TagsDropDown
+                hideSelf={() => setIsEditingTags(false)}
+                setActiveTags={setNotesTags}
+                activeTags={note.tags}
+              />
+            )}
+          </div>
+
+          <button
+            className="text-editor__save button"
+            title="Save note"
+            onClick={handleSave}
+          />
           <button
             className="text-editor__clear button"
             title="Clear"

@@ -245,10 +245,6 @@ body {
     font-weight: 500;
   }
 
-  &__edit-tags-dropdown {
-    position: relative;
-  }
-
   &__text {
     position: relative;
   }
@@ -291,6 +287,7 @@ body {
   width: 12rem;
   overflow: hidden;
 
+  list-style: none !important;
   border-radius: $small-border-radius;
   box-shadow: $box-shadow;
   background-color: $white;
@@ -392,7 +389,6 @@ body {
   flex: 3;
   display: flex;
   flex-direction: column;
-  gap: calc($small-gap * 2);
   padding-left: 5%;
   padding-right: 5%;
   padding-bottom: $medium-padding;
@@ -407,7 +403,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: $small-gap;
-    padding: $medium-padding;
+    padding: $medium-padding $medium-padding 0 $medium-padding;
 
     background-color: $white;
     box-shadow: $box-shadow;
@@ -454,12 +450,12 @@ body {
   }
 }
 
+// # <TextEditor />
 .text-editor {
-  height: 95%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: $small-gap;
 
   // Toolbar controls formatting
   &__toolbar {
@@ -472,6 +468,10 @@ body {
     & .text-editor__toolbar-btns-container {
       display: flex;
       gap: calc($small-gap / 2);
+
+      & .text-editor__tags-dropdown {
+        position: relative;
+      }
     }
 
     & .button {
@@ -553,6 +553,14 @@ body {
 
     & .text-editor__clear {
       background-image: url("../assets/trash.png");
+    }
+
+    & .text-editor__save {
+      background-image: url("../assets/plus.png");
+    }
+
+    & .text-editor__tags {
+      background-image: url("../assets/tag.png");
     }
   }
 
