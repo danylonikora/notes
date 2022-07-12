@@ -17,7 +17,7 @@ export const tagsSlice = createSlice({
     },
     renameTag(state, action: PayloadAction<{ name: string; newName: string }>) {
       const { name, newName } = action.payload;
-      if (!state.includes(name)) return;
+      if (state.includes(name)) return;
       state[state.indexOf(name)] = newName;
     },
   },

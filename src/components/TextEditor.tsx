@@ -158,7 +158,6 @@ function TextEditor({
         </div>
         <div className="text-editor__toolbar-btns-container">
           <div className="text-editor__tags-dropdown">
-            {/* <Overlay id={3} /> */}
             <button
               className="text-editor__tags button"
               title="Edit note's tags"
