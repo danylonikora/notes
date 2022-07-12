@@ -83,8 +83,10 @@ function SideBar({ filters, setTag, setIncludes, setSort }: SideBarProps) {
           className="tags__add-btn-container"
           tabIndex={0}
           onClick={() => {
-            dispatch(addTag(newTagField));
-            setNewTagField("");
+            if (newTagField) {
+              dispatch(addTag(newTagField));
+              setNewTagField("");
+            }
           }}
         >
           <button className="tags__add-btn" tabIndex={-1}>

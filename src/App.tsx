@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import Note, { NoteT } from "./components/Note";
 import SideBar from "./components/SideBar";

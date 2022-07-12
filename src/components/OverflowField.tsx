@@ -47,7 +47,6 @@ function OverflowField({
         className="overflow-field"
         ref={containerRef}
         onClick={(e) => {
-          console.log("click on me");
           e.stopPropagation();
         }}
       >
@@ -60,8 +59,10 @@ function OverflowField({
         <button
           className="overflow-field__save-btn"
           onClick={() => {
-            setValue(field);
-            hideSelf();
+            if (field) {
+              setValue(field);
+              hideSelf();
+            }
           }}
         >
           Save

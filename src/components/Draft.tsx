@@ -82,6 +82,14 @@ function Draft({ draft, setDraft }: DraftProps) {
           }}
           isFullSized={isEditorFullSized}
           handleSave={() => {
+            if (
+              (!noteFields.html && !noteFields.delta) ||
+              (noteFields.html === "<p><br></p>" &&
+                JSON.stringify(noteFields.delta) ===
+                  JSON.stringify('{"ops":[{"insert":"\\n"}]}'))
+            )
+              return;
+
             if (draft.mode === "creating") {
               dispatch(addNote({ ...noteFields, last_update: Date.now() }));
             } else {
