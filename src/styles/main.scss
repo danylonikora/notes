@@ -283,6 +283,8 @@ body {
   display: flex;
   flex-direction: column;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   width: 12rem;
   overflow: hidden;
@@ -340,7 +342,7 @@ body {
     list-style: decimal;
   }
 
-  ul,
+  ul:not(.tags-dropdown),
   ol {
     margin-left: 2rem;
   }
