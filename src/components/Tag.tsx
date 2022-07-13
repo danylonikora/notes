@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import OverflowField from "./OverflowField";
 import { useAppDispatch } from "../store";
 import { removeTag, renameTag } from "../store/tagsSlice";
-import { updateNotesTag } from "../store/notesSlice";
+import { updateNotesTag, removeTagFromNotes } from "../store/notesSlice";
 
 import pencilPng from "../assets/pencil.png";
 import trashPng from "../assets/trash.png";
@@ -48,6 +48,7 @@ function Tag({ amountOfNotes, tag, isActive, setTag }: TagProps) {
           onClick={(e) => {
             e.stopPropagation();
             dispatch(removeTag(tag));
+            dispatch(removeTagFromNotes(tag));
           }}
         />
       </div>

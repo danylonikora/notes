@@ -61,11 +61,24 @@ export const notesSlice = createSlice({
         }
       });
     },
+    removeTagFromNotes(state, action: PayloadAction<string>) {
+      const tag = action.payload;
+      state.forEach((note) => {
+        if (note.tags.includes(tag)) {
+          note.tags.splice(note.tags.indexOf(tag), 1);
+        }
+      });
+    },
   },
 });
 
-export const { addNote, removeNote, changeNote, updateNotesTag } =
-  notesSlice.actions;
+export const {
+  addNote,
+  removeNote,
+  changeNote,
+  updateNotesTag,
+  removeTagFromNotes,
+} = notesSlice.actions;
 
 export const selectNotes = (state: RootState) => state.notes;
 
