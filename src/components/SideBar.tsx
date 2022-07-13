@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Tag from "./Tag";
 import Overlay from "./Overlay";
 import type { FiltersT } from "../App";
 import { useAppSelector, useAppDispatch } from "../store";
 import { selectNotes } from "../store/notesSlice";
 import { addTag, selectTags } from "../store/tagsSlice";
+import OverflowField from "./OverflowField";
 
 import plusPng from "../assets/plus.png";
 
@@ -16,10 +17,13 @@ type SideBarProps = {
 };
 
 function SideBar({ filters, setTag, setIncludes, setSort }: SideBarProps) {
-  const [newTagField, setNewTagField] = useState("");
+  const [isCreatingTag, setIsCreatingTag] = useState(false);
+
   const notes = useAppSelector(selectNotes);
   const tags = useAppSelector(selectTags);
   const dispatch = useAppDispatch();
+
+  const addTagRef = useRef<HTMLLIElement>(null);
 
   return (
     <div className="side-bar">
@@ -71,28 +75,27 @@ function SideBar({ filters, setTag, setIncludes, setSort }: SideBarProps) {
             setTag={setTag}
           />
         ))}
-        <li>
-          <input
-            className="tags__new-tag-field"
-            value={newTagField}
-            placeholder="New tag"
-            onChange={(e) => setNewTagField(e.target.value)}
-          />
-        </li>
         <li
           className="tags__add-btn-container"
           tabIndex={0}
-          onClick={() => {
-            if (newTagField) {
-              dispatch(addTag(newTagField));
-              setNewTagField("");
-            }
-          }}
+          ref={addTagRef}
+          onClick={() => setIsCreatingTag(true)}
         >
           <button className="tags__add-btn" tabIndex={-1}>
             <img className="tags__add-icon" src={plusPng} />
             <span>Add tag</span>
           </button>
+          {isCreatingTag && (
+            <OverflowField
+              value=""
+              setValue={(value) => {
+                dispatch(addTag(value));
+              }}
+              hideSelf={() => setIsCreatingTag(false)}
+              overflowedElement={addTagRef.current}
+              placeholder="New tag"
+            />
+          )}
         </li>
       </ul>
     </div>

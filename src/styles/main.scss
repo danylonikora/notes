@@ -149,21 +149,22 @@ body {
       background-color: $grey-400;
     }
 
+    &__add-btn-container {
+      position: relative;
+    }
+
     &__add-btn {
       display: flex;
       align-items: center;
       gap: $small-gap;
+      width: 100%;
+      height: 100%;
 
       cursor: inherit;
     }
 
     &__add-icon {
       width: $icon-size;
-    }
-
-    &__new-tag-field {
-      border: none;
-      background-color: $white;
     }
 
     & > * {
