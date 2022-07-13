@@ -6,6 +6,7 @@ type OverflowFieldProps = {
   setValue: (value: string) => void;
   hideSelf: () => void;
   overflowedElement: HTMLElement | null;
+  placeholder: string;
 };
 
 function OverflowField({
@@ -13,6 +14,7 @@ function OverflowField({
   setValue,
   hideSelf,
   overflowedElement,
+  placeholder,
 }: OverflowFieldProps) {
   const [field, setField] = useState(value);
 
@@ -23,52 +25,47 @@ function OverflowField({
 
   useEffect(() => {
     if (!overflowedElement) return;
-
     OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
 
     if (!fieldRef.current) return;
-    const { width } = overflowedElement.getBoundingClientRect();
-    fieldRef.current.style.width = width + "px";
+    fieldRef.current.focus();
 
     return () => {
       OverlayContext.unmountOverlays();
     };
   }, []);
 
-  useEffect(() => {
-    if (!fieldRef.current) return;
-    const { scrollHeight } = fieldRef.current;
-    fieldRef.current.style.height = scrollHeight + "px";
-  }, [field]);
-
   return (
-    <>
-      <div
-        className="overflow-field"
-        ref={containerRef}
-        onClick={(e) => {
-          e.stopPropagation();
+    <div
+      className="overflow-field"
+      ref={containerRef}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <textarea
+        className="overflow-field__field"
+        ref={fieldRef}
+        value={field}
+        onChange={(e) => setField(e.target.value)}
+        placeholder={placeholder}
+        onFocus={(e) => {
+          e.target.selectionStart = e.target.selectionEnd =
+            e.target.value.length; // Set selection to the end
+        }}
+      />
+      <button
+        className="overflow-field__save-btn"
+        onClick={() => {
+          if (field) {
+            setValue(field);
+            hideSelf();
+          }
         }}
       >
-        <textarea
-          className="overflow-field__field"
-          ref={fieldRef}
-          value={field}
-          onChange={(e) => setField(e.target.value)}
-        />
-        <button
-          className="overflow-field__save-btn"
-          onClick={() => {
-            if (field) {
-              setValue(field);
-              hideSelf();
-            }
-          }}
-        >
-          Save
-        </button>
-      </div>
-    </>
+        Save
+      </button>
+    </div>
   );
 }
 
