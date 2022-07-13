@@ -36,7 +36,7 @@ function SideBar({ filters, setTag, setIncludes, setSort }: SideBarProps) {
           onChange={(e) => setIncludes(e.target.value)}
         />
         <div className="filters__sort">
-          <span>Sort: </span>
+          <p>Sort by date: </p>
           <span
             className={`pointer${
               filters.sort === "ascending" ? " active" : ""
