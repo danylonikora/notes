@@ -183,8 +183,14 @@ body {
 
     font-weight: 500;
 
+    &:hover {
+      .tag__buttons {
+        display: flex;
+      }
+    }
+
     &__buttons {
-      display: flex;
+      display: none;
       gap: 0.5rem;
     }
 
