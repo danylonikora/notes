@@ -57,7 +57,15 @@ input {
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 62.5%; // 10px
+
+  @media (max-width: 1500px) {
+    font-size: 56.25%; // 9px
+  }
+
+  @media (max-width: 1350px) {
+    font-size: 50%; // 8px
+  }
 }
 
 * {
@@ -214,6 +222,16 @@ body {
   padding-right: 5%;
   padding-bottom: $medium-padding;
   position: relative;
+
+  @media (max-width: 1750px) {
+    padding-left: 3.5%;
+    padding-right: 3.5%;
+  }
+
+  @media (max-width: 1600px) {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
 }
 
 // ## <Note />
@@ -399,6 +417,16 @@ body {
   align-self: flex-start;
   height: 100vh;
 
+  @media (max-width: 1750px) {
+    padding-left: 3.5%;
+    padding-right: 3.5%;
+  }
+
+  @media (max-width: 1600px) {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
   &__editor {
     height: 100%;
     width: 100%;
@@ -462,6 +490,7 @@ body {
   // Toolbar controls formatting
   &__toolbar {
     display: flex;
+    gap: calc($small-gap / 2);
     justify-content: space-between;
     padding-bottom: $small-gap;
 
