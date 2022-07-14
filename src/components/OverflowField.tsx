@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { OverlaysContext } from "../App";
+import OverlaysContext from "../contexts/OverlaysContext";
 
 type OverflowFieldProps = {
   value: string;
@@ -7,6 +7,7 @@ type OverflowFieldProps = {
   hideSelf: () => void;
   overflowedElement: HTMLElement | null;
   placeholder: string;
+  hideSelfTitle: string;
 };
 
 function OverflowField({
@@ -15,6 +16,7 @@ function OverflowField({
   hideSelf,
   overflowedElement,
   placeholder,
+  hideSelfTitle,
 }: OverflowFieldProps) {
   const [field, setField] = useState(value);
 
@@ -25,7 +27,12 @@ function OverflowField({
 
   useEffect(() => {
     if (!overflowedElement) return;
-    OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
+    OverlayContext.mountOverlays(
+      () => hideSelf(),
+      containerRef,
+      [0, 1, 2],
+      hideSelfTitle
+    );
 
     if (!fieldRef.current) return;
     fieldRef.current.focus();

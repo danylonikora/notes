@@ -1,40 +1,19 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import Note, { NoteT } from "./components/Note";
 import SideBar from "./components/SideBar";
 import Draft from "./components/Draft";
-import Overlay, { OverlayProps } from "./components/Overlay";
+import Overlay from "./components/Overlay";
 import { useAppSelector } from "./store";
 import { selectNotes } from "./store/notesSlice";
 import { enableBodyScroll, disableBodyScroll } from "./utils/bodyScroll";
+import OverlaysContext, { IOverlaysContext } from "./contexts/OverlaysContext";
 
 export type FiltersT = {
   sort: "ascending" | "descending";
   includes: string;
   tag: string;
 };
-
-type OverlaysContextProps = {
-  overlaysProps: OverlayProps;
-  showOverlays: boolean;
-  mountOverlays: (
-    handleClick: OverlayProps["handleClick"],
-    overlayedElementRef: OverlayProps["overlayedElementRef"],
-    activeOverlays: OverlayProps["activeOrverlays"]
-  ) => void;
-  unmountOverlays: () => void;
-};
-
-export const OverlaysContext = createContext<OverlaysContextProps>({
-  overlaysProps: {
-    overlayedElementRef: undefined,
-    handleClick: undefined,
-    activeOrverlays: [],
-  },
-  showOverlays: false,
-  mountOverlays: () => undefined,
-  unmountOverlays: () => undefined,
-});
 
 export type draftState = {
   mode: "editing" | "creating";
@@ -49,10 +28,13 @@ function App() {
     tag: "",
   });
   const [showOverlays, setShowOverlays] = useState(false);
-  const [overlaysProps, setOverlaysProps] = useState<OverlayProps>({
+  const [overlaysProps, setOverlaysProps] = useState<
+    IOverlaysContext["overlaysProps"]
+  >({
     overlayedElementRef: undefined,
     handleClick: undefined,
     activeOrverlays: [],
+    title: undefined,
   });
   const [draft, setDraft] = useState<draftState>({
     mode: "creating",
@@ -104,11 +86,17 @@ function App() {
       value={{
         overlaysProps,
         showOverlays,
-        mountOverlays(handleClick, overlayedElementRef, activeOrverlays) {
+        mountOverlays(
+          handleClick,
+          overlayedElementRef,
+          activeOrverlays,
+          title
+        ) {
           setOverlaysProps({
             handleClick,
             overlayedElementRef,
             activeOrverlays,
+            title,
           });
           setShowOverlays(true);
         },

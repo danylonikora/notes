@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { OverlaysContext } from "../App";
+import OverlaysContext from "../contexts/OverlaysContext";
 import { useAppSelector } from "../store";
 import { selectTags } from "../store/tagsSlice";
 
@@ -29,7 +29,8 @@ function TagsDropDown({
     OverlayContext.mountOverlays(
       () => hideSelf(),
       containerRef,
-      activeOverlays
+      activeOverlays,
+      "Close tags drop-down"
     );
 
     return () => {

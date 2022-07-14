@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import Overlay from "./Overlay";
 import TextEditor from "./TextEditor";
-import { OverlaysContext } from "../App";
+import OverlaysContext from "../contexts/OverlaysContext";
 import type { NoteT } from "./Note";
 import type { draftState } from "../App";
 import { addNote, changeNote } from "../store/notesSlice";
@@ -41,7 +41,12 @@ function Draft({ draft, setDraft }: DraftProps) {
     setNoteFields(draft.note);
 
     if (draft.mode === "editing") {
-      OverlayContext.mountOverlays(setDefaultDraftState, containerRef, [0, 1]);
+      OverlayContext.mountOverlays(
+        setDefaultDraftState,
+        containerRef,
+        [0, 1],
+        "Cancel note editing"
+      );
     } else {
       OverlayContext.unmountOverlays();
     }

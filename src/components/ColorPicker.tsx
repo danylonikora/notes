@@ -1,5 +1,5 @@
 import { useEffect, useRef, useContext } from "react";
-import { OverlaysContext } from "../App";
+import OverlaysContext from "../contexts/OverlaysContext";
 
 export const COLORS = [
   { name: "Yellow", hex: "#FFF599" },
@@ -24,7 +24,12 @@ function ColorPicker({ changeHandler, hideSelf }: ColorPickerProps) {
   const OverlayContext = useContext(OverlaysContext);
 
   useEffect(() => {
-    OverlayContext.mountOverlays(() => hideSelf(), containerRef, [0, 1, 2]);
+    OverlayContext.mountOverlays(
+      () => hideSelf(),
+      containerRef,
+      [0, 1, 2],
+      "Close color picker"
+    );
 
     return () => {
       OverlayContext.unmountOverlays();

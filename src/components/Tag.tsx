@@ -62,6 +62,7 @@ function Tag({ amountOfNotes, tag, isActive, setTag }: TagProps) {
           hideSelf={() => setIsRenaming(false)}
           overflowedElement={liRef.current}
           placeholder="New tag name"
+          hideSelfTitle="Cancel tag renaming"
         />
       )}
     </li>

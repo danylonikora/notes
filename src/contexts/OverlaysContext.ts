@@ -5,12 +5,14 @@ export interface IOverlaysContext {
     overlayedElementRef: React.RefObject<HTMLElement> | undefined;
     handleClick: (() => void) | undefined;
     activeOrverlays: number[];
+    title: string | undefined;
   };
   showOverlays: boolean;
   mountOverlays: (
     handleClick: IOverlaysContext["overlaysProps"]["handleClick"],
     overlayedElementRef: IOverlaysContext["overlaysProps"]["overlayedElementRef"],
     activeOverlays: IOverlaysContext["overlaysProps"]["activeOrverlays"],
+    title: IOverlaysContext["overlaysProps"]["title"]
   ) => void;
   unmountOverlays: () => void;
 }
@@ -20,6 +22,7 @@ const OverlaysContext = createContext<IOverlaysContext>({
     overlayedElementRef: undefined,
     handleClick: undefined,
     activeOrverlays: [],
+    title: undefined,
   },
   showOverlays: false,
   mountOverlays: () => undefined,

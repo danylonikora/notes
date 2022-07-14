@@ -94,6 +94,7 @@ function SideBar({ filters, setTag, setIncludes, setSort }: SideBarProps) {
               hideSelf={() => setIsCreatingTag(false)}
               overflowedElement={addTagRef.current}
               placeholder="New tag"
+              hideSelfTitle="Cancel new tag creation"
             />
           )}
         </li>
