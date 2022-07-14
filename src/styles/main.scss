@@ -47,6 +47,21 @@ $box-shadow: 0px 0px 10px 2px rgba($black, 0.25);
   }
 }
 
+.icon-btn {
+  padding: 1.4rem;
+
+  cursor: pointer;
+  background-size: $icon-size;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: center;
+  border-radius: $small-border-radius;
+
+  &:hover {
+    background-color: $grey-400;
+  }
+}
+
 // # Global styles
 input {
   height: $small-heihgt;
@@ -254,6 +269,11 @@ body {
   box-shadow: $box-shadow;
   border-radius: $small-border-radius;
 
+  &__date-and-btns-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &__date {
     font-weight: 500;
   }
@@ -266,6 +286,8 @@ body {
   &__tag {
     display: flex;
     align-items: center;
+    padding: $small-padding-y;
+    height: $small-heihgt;
 
     background-color: $grey-400;
     border-radius: $small-border-radius;
@@ -277,31 +299,28 @@ body {
   }
 
   &__btn {
-    display: flex;
-    gap: $small-gap;
-    align-items: center;
-  }
-
-  &__tag,
-  &__btn {
-    padding: $small-padding-y;
-    height: $small-heihgt;
-  }
-
-  &__delete-btn,
-  &__edit-btn {
-    @extend .btn;
-    height: $small-heihgt;
-  }
-
-  &__icon {
-    width: $icon-size;
+    @extend .icon-btn;
   }
 
   &__btns {
+    visibility: hidden;
     display: flex;
-    gap: $small-gap;
+    gap: calc($small-gap / 2);
     align-self: center;
+  }
+
+  &:hover {
+    .note__btns {
+      visibility: visible;
+    }
+  }
+
+  &__delete-btn {
+    background-image: url("../assets/trash.png");
+  }
+
+  &__edit-btn {
+    background-image: url("../assets/pencil.png");
   }
 }
 
@@ -515,14 +534,7 @@ body {
     }
 
     & .button {
-      padding: 1.4rem;
-
-      cursor: pointer;
-      background-size: $icon-size;
-      background-repeat: no-repeat;
-      background-position-y: center;
-      background-position-x: center;
-      border-radius: $small-border-radius;
+      @extend .icon-btn;
 
       &:hover,
       &.ql-active {
