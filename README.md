@@ -4,7 +4,7 @@ This app allows you to make, edit, search and filter notes very fast. I've been 
 
 ## Link to app
 
-https://danyanikora.github.io/notes/
+https://danyloikora.github.io/notes/
 
 ## Stack
 
